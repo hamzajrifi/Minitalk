@@ -1,14 +1,28 @@
 CC = gcc
+
 FLAGS = -Wall -Wextra -Werror
+
 HEADER = header.h
+
 NAME = mainitalk.a
+
 SRV_NAME = server.a
+
 CC_FILES = 	client.c \
+			checker.c \
 			function.c
-CS_FILES = server.c
+
+CS_FILES = 	server.c \
+			checker.c \
+			function.c
+
 OC_FILES = 	client.o \
+			checker.o \
 			function.o
-OS_FILES = server.o
+
+OS_FILES = 	server.o \
+			checker.o \
+			function.o
 
 all : CLN SRV
 

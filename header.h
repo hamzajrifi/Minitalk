@@ -6,5 +6,11 @@
 # include <stdlib.h>
 # include <stdio.h>
 
-int ft_atoi(char *str);
+
+int		ft_atoi(char *str);
+void	ft_putnbr(int nbr);
+void	check_PID(char *av);
+void	ft_putnbr(int nbr);
+void	ft_putchar(char c);
+void	ft_puts(char *str);
 #endif
