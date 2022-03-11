@@ -11,7 +11,7 @@ void    send_sin(int *bin, int PID)
 			kill(PID, SIGUSR1);
 		else
 			kill(PID, SIGUSR2);
-		usleep(100);
+		usleep(500);
 		i--;
 	}
 }
@@ -48,15 +48,16 @@ void    convert_binary(char **str, int PID)
 		send_sin(bin, PID);
 		i++;
     }
-	
-	for (int i = j; i >= 0; i--)
-	{
-		printf("%d", bin[i]);
-	}
+	free(bin);
+	//for (int i = j; i >= 0; i--)
+	//{
+	//	printf("%d", bin[i]);
+	//}
 }
 
 int main(int ac, char **av)
 {
+
 	if (ac < 2)
 	{
 		write(2, "Insert Your PID \n", 18);
@@ -74,5 +75,7 @@ int main(int ac, char **av)
 	}
 	check_PID(av[1]);
 	convert_binary(av, ft_atoi(av[1]));
+	while (1);
+	
 	return (0);
 }

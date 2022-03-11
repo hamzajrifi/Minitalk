@@ -1,7 +1,7 @@
 
 #include "header.h"
 
-char	*convert_dicimal(int *bin)
+int	convert_dicimal(int *bin)
 {
 	int i;
 	//char *tab_dec;
@@ -13,18 +13,21 @@ char	*convert_dicimal(int *bin)
 	i = 7;
 	 while ( i > 0)  
     {
+		 
         dec = dec + bin[i] * base;
         base = base * 2;
 		i--;
 	}
-	printf("dec = %c \n", dec);
-	return (NULL);
+	//printf("dec = %c \n", dec);
+	return (dec);
 }
 
 void check_bit(int sig)
 {
 	static int	i;
 	static int bin[8];
+	static char tab[1000];
+	static int j;
 
 	if (sig == SIGUSR1)
 		bin[i] = 1;
@@ -33,22 +36,22 @@ void check_bit(int sig)
 	i++;
 	if (i == 8)
 	{
-		convert_dicimal(bin);
+		tab[j] = convert_dicimal(bin);
+		ft_putchar(tab[j]);
+		i = 0;
+		j++;
 	}
 }
 
-void	ft_catch()
-{
-	signal(SIGUSR1, check_bit);
-	signal(SIGUSR2, check_bit);
-}
 
 int main()
 {
 	write (1, "My PID it's =     ", 19);
 	ft_putnbr(getpid());
 	write(1, "\n", 1);
-	ft_catch();
+	signal(SIGUSR1, check_bit);
+	signal(SIGUSR2, check_bit);
+	//ft_catch();
 	while (1)
 		pause();
 }
