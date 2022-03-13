@@ -4,15 +4,15 @@ void	send_sin(int *bin, int PID)
 {
 	int i;
 
-	i = 7;
-	while (i >= 0)
+	i = 0;
+	while (i <= 7)
 	{
 		if (bin[i] == 1)
 			kill(PID, SIGUSR1);
 		else
 			kill(PID, SIGUSR2);
 		usleep(50);
-		i--;
+		i++;
 	}
 }
 
@@ -30,43 +30,40 @@ int	ft_nchar(int n)
 }
 
 
-
+/******************************/
 void	convert_binary(char *tab, int PID)
 {
 	int		i;
 	int		nbr;
-	int		bin[8];
-	int 	j;
+	//int		bin[8];
 	int		k;
 
 	i = 0;
 	while(tab[i])
 	{
 		nbr = tab[i];
-		j = 0;
-		k = 7;
+		k = 8;
 		while (k != 0)
 		{
-			if (nbr == 0)
-				bin[j] = 0;
+			if (nbr % 2 == 0)
+				kill(PID, SIGUSR2);
 			else
-			{
-				bin[j] = nbr % 2;
-				nbr = nbr / 2;
-			}
-			j++;
+				kill(PID, SIGUSR1);
+			usleep(50);
+			nbr = nbr / 2;
 			k--;
 		}
-		send_sin(bin, PID);
 		i++;
 	}
-	if (tab[i] == '\0')
-	{
-		i = 0;
-		while (i < 8)
-			bin[i++] = 0;
-		send_sin(bin, PID);
-	}
+	//if (tab[i] == '\0')
+	//{
+	//	i = 0;
+	//	while (i < 8)
+	//	{
+	//		kill(PID, SIGUSR2);
+	//		i++;
+	//	}
+	//}
 }
 
 void	send_PID(int PID)
