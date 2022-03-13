@@ -5,18 +5,6 @@ void    ft_putchar(char c)
     write(1, &c, 1);
 }
 
-void    ft_puts(char *str)
-{
-    int i;
-    i = 0;
-    while (str[i])
-    {
-        write(1, &str[i],1);
-        i++;
-    }
-    write(1, "\n", 1);
-}
-
 int ft_atoi(char *str)
 {
     long res;
@@ -41,7 +29,7 @@ int ft_atoi(char *str)
     }
     if (sin < 0)
     {
-        ft_puts("check your PID correct ");
+        write(2, "check your PID correct \n", 25);
         exit(1);
     }
     return (res * sin);

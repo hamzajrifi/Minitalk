@@ -5,8 +5,8 @@ int	convert_dicimal(int *bin)
 {
 	int i;
 	//char *tab_dec;
-	int base;
-	int dec;
+	unsigned int base;
+	unsigned int dec;
 
 	base =1;
 	dec = 0;
@@ -24,10 +24,11 @@ int	convert_dicimal(int *bin)
 
 void check_bit(int sig)
 {
-	static int	i;
+	static unsigned int	i;
 	static int bin[8];
-	static char tab[1000];
-	static int j;
+	static char tab[999999999999];
+	static unsigned int j;
+	static unsigned int k;
 
 	if (sig == SIGUSR1)
 		bin[i] = 1;
@@ -36,9 +37,16 @@ void check_bit(int sig)
 	i++;
 	if (i == 8)
 	{
-		tab[j] = convert_dicimal(bin);
-		ft_putchar(tab[j]);
 		i = 0;
+		tab[j] = convert_dicimal(bin);
+		if (tab[j] == '\0')
+		{
+			while (j > k)
+			{
+				ft_putchar(tab[k++]);
+				//write(1, "lolo \n", 7);
+			}
+		}
 		j++;
 	}
 }

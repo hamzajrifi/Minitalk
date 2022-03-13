@@ -12,5 +12,5 @@ void	ft_putnbr(int nbr);
 void	check_PID(char *av);
 void	ft_putnbr(int nbr);
 void	ft_putchar(char c);
-void	ft_puts(char *str);
+int     ft_strlen(char *str);
 #endif
