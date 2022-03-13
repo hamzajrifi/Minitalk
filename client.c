@@ -4,15 +4,15 @@ void	send_sin(int *bin, int PID)
 {
 	int i;
 
-	i = 0;
-	while (i <= 7)
+	i = 7;
+	while (0 <= i)
 	{
 		if (bin[i] == 1)
 			kill(PID, SIGUSR1);
 		else
 			kill(PID, SIGUSR2);
 		usleep(50);
-		i++;
+		i--;
 	}
 }
 
@@ -35,35 +35,46 @@ void	convert_binary(char *tab, int PID)
 {
 	int		i;
 	int		nbr;
-	//int		bin[8];
+	int		bin[8];
 	int		k;
 
 	i = 0;
 	while(tab[i])
 	{
+		//ft_putchar(tab[i]);
 		nbr = tab[i];
-		k = 8;
+		k = 7;
 		while (k != 0)
 		{
 			if (nbr % 2 == 0)
-				kill(PID, SIGUSR2);
+			{
+				//kill(PID, SIGUSR2);
+				bin[k] = 0;
+				//ft_putchar('0');
+			}
 			else
-				kill(PID, SIGUSR1);
-			usleep(50);
+			{
+				bin[k] = 1;
+				//kill(PID, SIGUSR1);
+				// ft_putchar('1');
+			}
+			//usleep(50);
 			nbr = nbr / 2;
 			k--;
 		}
+		send_sin(bin, PID);
 		i++;
 	}
-	//if (tab[i] == '\0')
-	//{
-	//	i = 0;
-	//	while (i < 8)
-	//	{
-	//		kill(PID, SIGUSR2);
-	//		i++;
-	//	}
-	//}
+	if (tab[i] == '\0')
+	{
+		i = 0;
+		while (i < 8)
+		{
+			kill(PID, SIGUSR2);
+			usleep(50);
+			i++;
+		}
+	}
 }
 
 void	send_PID(int PID)
@@ -84,6 +95,29 @@ void	send_PID(int PID)
 	printf("pid client = %s \n", str);
 	convert_binary(str, PID);
 }
+/***********************************/
+void	character_sender(char ch, int pid)
+{
+	int	bit;
+
+	bit = 7;
+	while (bit != -1)
+	{
+		if (ch & (1 << bit))
+		{
+			kill(pid, SIGUSR1);
+			write(1, "1", 1);
+		}
+		else
+		{
+			kill(pid, SIGUSR2);
+			write(1, "0", 1);
+		}
+		bit--;
+		usleep(100);
+	}
+}
+/***********************************/
 
 int	main(int ac, char **av)
 {
@@ -103,6 +137,14 @@ int	main(int ac, char **av)
 		exit(1);
 	}
 	check_PID(av[1]);
+	//int i = 0;
+	//while (av[2][i])
+	//{
+	//	
+	//	character_sender(av[2][i], ft_atoi(av[1]));
+	//	i++;
+	//}
+	//character_sender(av[2][i], ft_atoi(av[1]));
 	convert_binary(av[2], ft_atoi(av[1]));
 	//send_PID(ft_atoi(av[1]));
 	return (0);

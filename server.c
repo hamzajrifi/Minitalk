@@ -57,31 +57,74 @@ void check_bit(int sig)
 {
 	static int	dec;
 	static int i;
-	//static int j;
+	static int j;
 	static int	base = 1;
-	//static int tab[999999999999];
-	//static int k;
+	static unsigned char tab[999999999999];
+	//unsigned char c;
+	static int k;
 	if (sig == SIGUSR1)
 	{
+		//ft_putchar('1');
 		dec = dec + base;
 		i++;
 	}
 	else
+	{
+		//ft_putchar('0');
 		i++;
+	}
 	base = base * 2;
 	//ft_putnbr(dec);
+	//ft_putchar('\n');
+// 
 	if (i == 8)
 	{
-		ft_putchar(dec);
-		//tab[j] = dec;
-		//if (tab[j] == 0)
-		//	while (j > k)
-		//j++;
+		tab[j] = dec;
+		//ft_putchar(dec);
+		if (dec == 0)
+			while (j > k)
+			{
+				ft_putchar(tab[k]);
+				k++;
+			}
+		j++;
 		base = 1;
 		dec = 0;
-		i = 0;😆
+		i = 0;
 	}
 }
+
+//void	check_bit(int i)
+//{
+//	static char	buffer[100000000];
+//	static int	counter = 0;
+//	static int	bit = 7;
+//
+//	if (i == SIGUSR1)
+//	{
+//		buffer[counter] |= (1 << bit);
+//			write(1, "1", 1);
+//	}
+//	if (i == SIGUSR2)
+//		{
+//		buffer[counter] &= ~(1 << bit);
+//			write(1, "0", 1);
+//		}
+//	bit--;
+//	if (bit == -1)
+//	{
+//		bit = 7;
+//		if (buffer[counter] == '\0')
+//		{
+//			write(1, buffer, counter);
+//			counter = 0;
+//		}
+//		else
+//		{
+//			counter++;
+//		}
+//	}
+//}
 
 int main()
 {
@@ -94,3 +137,4 @@ int main()
 	while (1)
 		pause();
 }
+ 
