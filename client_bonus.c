@@ -1,20 +1,5 @@
 
 #include "header.h"
-//void	send_sin(int *bin, int PID)
-//{
-//	int i;
-//
-//	i = 7;
-//	while (0 <= i)
-//	{
-//		if (bin[i] == 1)
-//			kill(PID, SIGUSR1);
-//		else
-//			kill(PID, SIGUSR2);
-//		usleep(50);
-//		i--;
-//	}
-//}
 
 int	ft_nchar(int n)
 {
@@ -31,59 +16,62 @@ int	ft_nchar(int n)
 
 
 /******************************/
-void	convert_binary(char *tab, int PID)
+void	ft_exit(void)
+{
+	write(2, "server does not receives a signal \n", 36);
+	exit(1);
+}
+
+void	convert_binary(char *tab, int pid)
 {
 	int		i;
 	int		nbr;
-	//int		bin[8];
 	int		k;
 
 	i = 0;
-	while(tab[i])
+	while (tab[i])
 	{
 		nbr = tab[i];
 		k = 8;
 		while (k != 0)
 		{
 			if (nbr % 2 == 0)
-				kill(PID, SIGUSR2);
-			else
-				kill(PID, SIGUSR1);
-			usleep(50);
+			{
+				if (kill(pid, SIGUSR2) == -1)
+					ft_exit();
+			}	
+			else if (kill(pid, SIGUSR1) == -1)
+				ft_exit();
+			usleep(100);
 			nbr = nbr / 2;
 			k--;
 		}
 		i++;
 	}
-	if (tab[i] == '\0')
-	{
-		i = 0;
-		while (i < 8)
-		{
-			kill(PID, SIGUSR2);
-			usleep(50);
-			i++;
-		}
-	}
 }
 
-void	send_PID(int PID)
+void	send_PID(int pid)
 {
 	int		n;
-	char	*str;
+	char	str[10];
 	int		len;
 
 	n = getpid();
 	len = ft_nchar(n);
-	str = malloc (sizeof(char) * len);
-	while (len >= 0)
+	while (len > 0)
 	{
 		str[len] = (n % 10) + '0';
 		n = n / 10;
 		len--;
 	}
-	printf("pid client = %s \n", str);
-	convert_binary(str, PID);
+	convert_binary(str, pid);
+	n = 0;
+	while (n < 8)
+	{
+		kill(pid, SIGUSR2);
+		usleep(100);
+		n++;
+	}
 }
 /***********************************/
 //void	character_sender(char ch, int pid)
@@ -108,34 +96,41 @@ void	send_PID(int PID)
 //	}
 //}
 /***********************************/
+void	end(int	n)
+{
+	(void)	n;
+	// if (n == SIGUSR1)
+		write(1, "\n\n\n------------- done ------------\n\n\n", 38);
+}
 
 int	main(int ac, char **av)
 {
-	if (ac < 2)
+	int	i;
+
+	if (ac != 3)
 	{
-		write(2, "Insert Your PID \n", 18);
+		write(2, "check your input \n", 19);
 		exit(1);
 	}
-	if (ft_atoi(av[1]) < -2)
+	if (ft_atoi(av[1]) < 1 || check_pid(av[1]))
 	{
-		write(2, "Insert Correct Your PID \n", 18);
+		write(2, "Insert Correct Your PID \n", 26);
 		exit(1);
 	}
-	if (ac == 2)
-	{
-		write(2, "Insert Your Message \n", 18);
-		exit(1);
-	}
-	check_PID(av[1]);
-	//int i = 0;
-	//while (av[2][i])
-	//{
-	//	
-	//	character_sender(av[2][i], ft_atoi(av[1]));
-	//	i++;
-	//}
-	//character_sender(av[2][i], ft_atoi(av[1]));
 	convert_binary(av[2], ft_atoi(av[1]));
+	i = 0;
+	while (i < 8)
+	{
+		kill(ft_atoi(av[1]), SIGUSR2);
+		usleep(100);
+		i++;
+	}
+	signal(SIGUSR1, end);
 	send_PID(ft_atoi(av[1]));
+	while (1)
+	{
+		pause();
+	}
+	
 	return (0);
 }

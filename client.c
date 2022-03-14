@@ -6,11 +6,17 @@
 /*   By: hjrifi <hjrifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 16:55:57 by hjrifi            #+#    #+#             */
-/*   Updated: 2022/03/14 17:31:44 by hjrifi           ###   ########.fr       */
+/*   Updated: 2022/03/14 18:54:28 by hjrifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+
+void	ft_exit(void)
+{
+	write(2, "server does not receives a signal \n", 36);
+	exit(1);
+}
 
 void	convert_binary(char *tab, int PID)
 {
@@ -28,10 +34,10 @@ void	convert_binary(char *tab, int PID)
 			if (nbr % 2 == 0)
 			{
 				if (kill(PID, SIGUSR2) == -1)
-					write(2, "problime when send signal \n", 28);
+					ft_exit();
 			}	
 			else if (kill(PID, SIGUSR1) == -1)
-				write(2, "problime when send signal \n", 28);
+				ft_exit();
 			usleep(100);
 			nbr = nbr / 2;
 			k--;
