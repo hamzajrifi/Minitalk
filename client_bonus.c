@@ -1,5 +1,31 @@
 
-#include "header.h"
+#include "header_bonus.h"
+
+void	ft_exit(void)
+{
+	write(2, "server does not receives a signal \n", 36);
+	exit(1);
+}
+/***********************************/
+void	convert_binary(char ch, int pid)
+{
+	int	bit;
+
+	bit = 7;
+	while (bit != -1)
+	{
+		if (ch & (1 << bit))
+		{
+			if (kill(pid, SIGUSR1) == -1)
+					ft_exit();
+		}
+		else if (kill(pid, SIGUSR2) == -1)
+			ft_exit();
+		bit--;
+		usleep(100);
+	}
+}
+/***********************************/
 
 int	ft_nchar(int n)
 {
@@ -13,44 +39,9 @@ int	ft_nchar(int n)
 	}
 	return (i);
 }
-
-
 /******************************/
-void	ft_exit(void)
-{
-	write(2, "server does not receives a signal \n", 36);
-	exit(1);
-}
 
-void	convert_binary(char *tab, int pid)
-{
-	int		i;
-	int		nbr;
-	int		k;
-
-	i = 0;
-	while (tab[i])
-	{
-		nbr = tab[i];
-		k = 8;
-		while (k != 0)
-		{
-			if (nbr % 2 == 0)
-			{
-				if (kill(pid, SIGUSR2) == -1)
-					ft_exit();
-			}	
-			else if (kill(pid, SIGUSR1) == -1)
-				ft_exit();
-			usleep(100);
-			nbr = nbr / 2;
-			k--;
-		}
-		i++;
-	}
-}
-
-void	send_PID(int pid)
+void	send_pid(int pid)
 {
 	int		n;
 	char	str[10];
@@ -58,49 +49,28 @@ void	send_PID(int pid)
 
 	n = getpid();
 	len = ft_nchar(n);
-	while (len > 0)
+	while (len >= 1)
 	{
 		str[len] = (n % 10) + '0';
 		n = n / 10;
 		len--;
 	}
-	convert_binary(str, pid);
-	n = 0;
-	while (n < 8)
+		//printf("str[len = (%c)\n", str[len + 1]);
+	convert_binary('\0', pid);
+	n = 1;
+	while (str[n])
 	{
-		kill(pid, SIGUSR2);
-		usleep(100);
+		convert_binary(str[n], pid);
 		n++;
 	}
+	convert_binary('\0', pid);
 }
-/***********************************/
-//void	character_sender(char ch, int pid)
-//{
-//	int	bit;
-//
-//	bit = 7;
-//	while (bit != -1)
-//	{
-//		if (ch & (1 << bit))
-//		{
-//			kill(pid, SIGUSR1);
-//			write(1, "1", 1);
-//		}
-//		else
-//		{
-//			kill(pid, SIGUSR2);
-//			write(1, "0", 1);
-//		}
-//		bit--;
-//		usleep(100);
-//	}
-//}
-/***********************************/
-void	end(int	n)
+
+void	ft_end(int	n)
 {
-	(void)	n;
-	// if (n == SIGUSR1)
-		write(1, "\n\n\n------------- done ------------\n\n\n", 38);
+	// (void)	n;
+	if (n == SIGUSR1)
+		write(1, "------------- done ------------\n", 33);
 }
 
 int	main(int ac, char **av)
@@ -117,20 +87,13 @@ int	main(int ac, char **av)
 		write(2, "Insert Correct Your PID \n", 26);
 		exit(1);
 	}
-	convert_binary(av[2], ft_atoi(av[1]));
 	i = 0;
-	while (i < 8)
-	{
-		kill(ft_atoi(av[1]), SIGUSR2);
-		usleep(100);
-		i++;
-	}
-	signal(SIGUSR1, end);
-	send_PID(ft_atoi(av[1]));
+	while (av[2][i])
+		convert_binary(av[2][i++], ft_atoi(av[1]));
+	send_pid(ft_atoi(av[1]));
+	signal(SIGUSR1, ft_end);
 	while (1)
-	{
 		pause();
-	}
-	
+
 	return (0);
 }

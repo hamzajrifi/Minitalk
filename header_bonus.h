@@ -6,7 +6,7 @@
 /*   By: hjrifi <hjrifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 17:00:50 by hjrifi            #+#    #+#             */
-/*   Updated: 2022/03/14 18:16:19 by hjrifi           ###   ########.fr       */
+/*   Updated: 2022/03/15 03:17:59 by hjrifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@
 # include <stdlib.h>
 # include <stdio.h>
 
+
 int		ft_atoi(char *str);
 void	ft_putnbr(int nbr);
 int		check_pid(char *av);
 void	ft_putnbr(int nbr);
 void	ft_putchar(char c);
+void	ft_exit(void);
 int		ft_strlen(char *str);
 #endif

@@ -50,7 +50,7 @@ BNS_C_NAME = client_bonus.a
 
 BNS_S_NAME = server_bonus.a
 
-HEADER_bns = header_bonus.h
+HEADER_BNS = header_bonus.h
 
 BNS_CC_FLIES =	client_bonus.c \
 				checker_bonus.c \
@@ -72,12 +72,12 @@ bonus :	BNS_CLN BNS_SRV
 
 BNS_CLN	: $(BNS_C_NAME)
 $(BNS_C_NAME) : $(BNS_OC_FLIES) $(HEADER_BNS)
-	$(CC) $(CFLAGS) $(BNS_CC_FLIES)
+	$(CC) $(CFLAGS) -c $(BNS_CC_FLIES)
 	ar -rc $(BNS_C_NAME) $(BNS_OC_FLIES)
 	$(CC) -o client_bonus client_bonus.c $(BNS_C_NAME)
 
 BNS_SRV	: $(BNS_S_NAME)
 $(BNS_S_NAME) : $(BNS_OS_FILES) $(HEADER_BNS)
-	$(CC) $(CFLAGS) $(BNS_SC_FLIES)
+	$(CC) $(CFLAGS) -c $(BNS_SC_FLIES)
 	ar -rc $(BNS_S_NAME) $(BNS_OS_FILES)
 	$(CC) -o server_bonus server_bonus.c $(BNS_S_NAME)

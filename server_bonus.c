@@ -1,104 +1,39 @@
-#include "header.h"
-
-//void	check_bit(int i)
-//{
-//	static char	buffer[100000000];
-//	static int	counter = 0;
-//	static int	bit = 7;
-//
-//	if (i == SIGUSR1)
-//	{
-//		buffer[counter] |= (1 << bit);
-//			write(1, "1", 1);
-//	}
-//	if (i == SIGUSR2)
-//		{
-//		buffer[counter] &= ~(1 << bit);
-//			write(1, "0", 1);
-//		}
-//	bit--;
-//	if (bit == -1)
-//	{
-//		bit = 7;
-//		if (buffer[counter] == '\0')
-//		{
-//			write(1, buffer, counter);
-//			counter = 0;
-//		}
-//		else
-//		{
-//			counter++;
-//		}
-//	}
-//}
-
-void	ft_print_str(int j, char *tab)
-{
-	static int	k;
-
-	if (k == 0)
-	{
-		while (j > k)
-			ft_putchar(tab[k++]);
-		k = 1;
-	}
-	else if (k != 0)
-	{
-		k = 0;
-		//printf("(%s)\n", tab);
-		kill(ft_atoi(++tab), SIGUSR1);
-		usleep(100);
-	}
-}
+#include "header_bonus.h"
 
 void	check_bit(int sig)
 {
-	static int	dec;
+	static char	tab[100000000];
 	static int	i;
-	static int	j;
-	static int	base = 1;
-	static char	tab[999999999999];
+	static int	bit = 7;
+	static int	k;
+
 
 	if (sig == SIGUSR1)
+		tab[i] |= (1 << bit);
+	if (sig == SIGUSR2)
+		tab[i] &= ~(1 << bit);
+	bit--;
+	if (bit == -1)
 	{
-		dec = dec + base;
-		i++;
-	}
-	else
-		i++;
-	base = base * 2;
-	if (i == 8)
-	{
-		tab[j] = dec;
-		if (dec == 0)
+		bit = 7;
+		if (tab[i] == '\0' && k == 0)
 		{
-			ft_print_str(j, tab);
-			j = -1;	
+			write(1, tab, i);
+			i = 0;
+			k = 1;
 		}
-		j++;
-		base = 1;
-		dec = 0;
-		i = 0;
+		else if (tab[i] == '\0' && k == 1)
+		{
+			kill(ft_atoi(tab), SIGUSR2);
+			usleep(100);
+			k = 0;
+			i = 0;
+		}
+		else
+			i++;
 	}
 }
 
-// if (dec == 0)
-		// {
-			// if (k == 0)
-			// {
-				// ft_print_str(j, tab);
-				// k++;
-				// j = -1;
-				// tab[0] = '\0';
-			// }
-			// else if (k == 1)
-			// {
-				// k = 0;
-				// kill(ft_atoi(tab), SIGUSR1);
-				// usleep(100);
-				// j = -2;
-			// }	
-		// }
 int	main(void)
 {
 	write (1, "My PID it's =     ", 19);
