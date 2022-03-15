@@ -1,12 +1,27 @@
 #include "header_bonus.h"
 
+void	ft_print_message(char *tab, int i)
+{
+	static int k;
+
+	if (tab[i] == '\0' && k == 0)
+	{
+		write(1, tab, i);
+		k = 1;
+	}
+	else if (tab[i] == '\0' && k == 1)
+	{
+		kill(ft_atoi(tab), SIGUSR2);
+		usleep(10);
+		k = 0;
+	}
+}
+
 void	check_bit(int sig)
 {
 	static char	tab[100000000];
 	static int	i;
 	static int	bit = 7;
-	static int	k;
-
 
 	if (sig == SIGUSR1)
 		tab[i] |= (1 << bit);
@@ -16,17 +31,9 @@ void	check_bit(int sig)
 	if (bit == -1)
 	{
 		bit = 7;
-		if (tab[i] == '\0' && k == 0)
+		if (tab[i] == '\0')
 		{
-			write(1, tab, i);
-			i = 0;
-			k = 1;
-		}
-		else if (tab[i] == '\0' && k == 1)
-		{
-			kill(ft_atoi(tab), SIGUSR2);
-			usleep(100);
-			k = 0;
+			ft_print_message(tab, i);
 			i = 0;
 		}
 		else

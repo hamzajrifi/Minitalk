@@ -7,14 +7,14 @@ void	ft_exit(void)
 	exit(1);
 }
 /***********************************/
-void	convert_binary(char ch, int pid)
+void	convert_binary(char c, int pid)
 {
 	int	bit;
 
 	bit = 7;
 	while (bit != -1)
 	{
-		if (ch & (1 << bit))
+		if (c & (1 << bit))
 		{
 			if (kill(pid, SIGUSR1) == -1)
 					ft_exit();
@@ -22,7 +22,7 @@ void	convert_binary(char ch, int pid)
 		else if (kill(pid, SIGUSR2) == -1)
 			ft_exit();
 		bit--;
-		usleep(100);
+		usleep(500);
 	}
 }
 /***********************************/
@@ -55,7 +55,6 @@ void	send_pid(int pid)
 		n = n / 10;
 		len--;
 	}
-		//printf("str[len = (%c)\n", str[len + 1]);
 	convert_binary('\0', pid);
 	n = 1;
 	while (str[n])
@@ -68,15 +67,16 @@ void	send_pid(int pid)
 
 void	ft_end(int	n)
 {
-	// (void)	n;
-	if (n == SIGUSR1)
-		write(1, "------------- done ------------\n", 33);
+	if (n == SIGUSR2)
+		write(1, "\n\n\n\n------------- done ------------\n\n\n\n", 40);
 }
 
 int	main(int ac, char **av)
 {
 	int	i;
 
+	signal(SIGUSR2, ft_end);
+	
 	if (ac != 3)
 	{
 		write(2, "check your input \n", 19);
@@ -91,9 +91,5 @@ int	main(int ac, char **av)
 	while (av[2][i])
 		convert_binary(av[2][i++], ft_atoi(av[1]));
 	send_pid(ft_atoi(av[1]));
-	signal(SIGUSR1, ft_end);
-	while (1)
-		pause();
-
 	return (0);
 }
