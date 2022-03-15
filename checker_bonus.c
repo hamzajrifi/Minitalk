@@ -6,7 +6,7 @@
 /*   By: hjrifi <hjrifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 16:55:46 by hjrifi            #+#    #+#             */
-/*   Updated: 2022/03/15 02:52:16 by hjrifi           ###   ########.fr       */
+/*   Updated: 2022/03/15 07:57:22 by hjrifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,10 @@ int	check_pid(char *av)
 		i++;
 	}
 	return (0);
+}
+
+void	ft_exit(void)
+{
+	write(2, "server does not receives a signal \n", 36);
+	exit(1);
 }

@@ -6,7 +6,7 @@
 /*   By: hjrifi <hjrifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 17:00:50 by hjrifi            #+#    #+#             */
-/*   Updated: 2022/03/15 03:17:59 by hjrifi           ###   ########.fr       */
+/*   Updated: 2022/03/15 07:55:16 by hjrifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <signal.h>
 # include <stdlib.h>
 # include <stdio.h>
-
 
 int		ft_atoi(char *str);
 void	ft_putnbr(int nbr);

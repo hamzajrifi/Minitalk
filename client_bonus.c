@@ -1,12 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hjrifi <hjrifi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/15 07:52:29 by hjrifi            #+#    #+#             */
+/*   Updated: 2022/03/15 07:56:09 by hjrifi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "header_bonus.h"
 
-void	ft_exit(void)
-{
-	write(2, "server does not receives a signal \n", 36);
-	exit(1);
-}
 /***********************************/
+
 void	convert_binary(char c, int pid)
 {
 	int	bit;
@@ -17,7 +24,7 @@ void	convert_binary(char c, int pid)
 		if (c & (1 << bit))
 		{
 			if (kill(pid, SIGUSR1) == -1)
-					ft_exit();
+				ft_exit();
 		}
 		else if (kill(pid, SIGUSR2) == -1)
 			ft_exit();
@@ -65,7 +72,7 @@ void	send_pid(int pid)
 	convert_binary('\0', pid);
 }
 
-void	ft_end(int	n)
+void	ft_end(int n)
 {
 	if (n == SIGUSR2)
 		write(1, "\n\n\n\n------------- done ------------\n\n\n\n", 40);
@@ -76,7 +83,6 @@ int	main(int ac, char **av)
 	int	i;
 
 	signal(SIGUSR2, ft_end);
-	
 	if (ac != 3)
 	{
 		write(2, "check your input \n", 19);
